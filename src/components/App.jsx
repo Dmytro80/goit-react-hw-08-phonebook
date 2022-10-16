@@ -7,10 +7,12 @@ export class App extends Component {
   state = {
     contacts: [],
     name: '',
+    number: '',
   };
 
   handleInputChange = e => {
-    this.setState({ name: e.currentTarget.value });
+    const { name, value } = e.currentTarget;
+    this.setState({ [name]: value });
   };
 
   handleSubmit = e => {
@@ -19,7 +21,7 @@ export class App extends Component {
     this.setState(prevState => ({
       contacts: [
         ...prevState.contacts,
-        { name: this.state.name, id: contactId },
+        { name: this.state.name, id: contactId, number: this.state.number },
       ],
     }));
 
@@ -29,6 +31,7 @@ export class App extends Component {
   reset = () => {
     this.setState({
       name: '',
+      number: '',
     });
   };
 
@@ -36,7 +39,8 @@ export class App extends Component {
     return (
       <>
         <PhonebookForm
-          value={this.state.name}
+          name={this.state.name}
+          number={this.state.number}
           onInputChange={this.handleInputChange}
           onSubmitPhonebookForm={this.handleSubmit}
         />
