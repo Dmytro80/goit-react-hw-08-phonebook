@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import PhonebookForm from './phonebookForm';
-import Contacts from './contacts';
+import ContactForm from './contactForm';
+import ContactList from './contactList';
 import Filter from './filter';
-import { nanoid } from 'nanoid';
 
 export class App extends Component {
   state = {
@@ -13,28 +12,17 @@ export class App extends Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
-    name: '',
-    number: '',
   };
 
-  handleInputChange = e => {
-    const { name, value } = e.currentTarget;
-    this.setState({ [name]: value });
+  handleFilterInputChange = e => {
+    const { value } = e.currentTarget;
+    this.setState({ filter: value });
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
-
-    const contact = {
-      name: this.state.name,
-      id: nanoid(),
-      number: this.state.number,
-    };
+  formSubmitHandler = contact => {
     this.setState(prevState => ({
       contacts: [contact, ...prevState.contacts],
     }));
-
-    this.reset();
   };
 
   getVisibleContacts = () => {
@@ -45,27 +33,17 @@ export class App extends Component {
     });
   };
 
-  reset = () => {
-    this.setState({
-      name: '',
-      number: '',
-    });
-  };
-
   render() {
-    const { name, number, filter } = this.state;
+    const { filter } = this.state;
     const visibleContacts = this.getVisibleContacts();
 
     return (
       <>
-        <PhonebookForm
-          name={name}
-          number={number}
-          onInputChange={this.handleInputChange}
-          onSubmitPhonebookForm={this.handleSubmit}
-        />
-        <Filter filter={filter} onInputChange={this.handleInputChange} />
-        <Contacts contacts={visibleContacts} />
+        <h1>Phonebook</h1>
+        <ContactForm onSubmitContactForm={this.formSubmitHandler} />
+        <h2>Contacts</h2>
+        <Filter filter={filter} onInputChange={this.handleFilterInputChange} />
+        <ContactList contacts={visibleContacts} />
       </>
     );
   }
