@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ContactForm from './contactForm';
 import ContactList from './contactList';
 import Filter from './filter';
+import { Wrapper, Title, SecondTitle } from './App.styled';
 
 export class App extends Component {
   state = {
@@ -54,16 +55,16 @@ export class App extends Component {
     const visibleContacts = this.getVisibleContacts();
 
     return (
-      <>
-        <h1>Phonebook</h1>
+      <Wrapper>
+        <Title>Phonebook</Title>
         <ContactForm onSubmitContactForm={this.formSubmitHandler} />
-        <h2>Contacts</h2>
+        <SecondTitle>Contacts</SecondTitle>
         <Filter filter={filter} onInputChange={this.handleFilterInputChange} />
         <ContactList
           contacts={visibleContacts}
           onDeleteContact={this.deleteContact}
         />
-      </>
+      </Wrapper>
     );
   }
 }

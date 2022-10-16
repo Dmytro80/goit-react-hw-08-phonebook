@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
+import { FindLabel, FindInput } from './Filter.styled';
 
 const Filter = ({ filter, onInputChange }) => {
   return (
-    <label>
-      Finde contacts by name
-      <input
+    <FindLabel>
+      Finde contacts by name:
+      <FindInput
         type="text"
         name="filter"
         value={filter}
@@ -13,7 +14,7 @@ const Filter = ({ filter, onInputChange }) => {
         required
         onChange={onInputChange}
       />
-    </label>
+    </FindLabel>
   );
 };
 export default Filter;

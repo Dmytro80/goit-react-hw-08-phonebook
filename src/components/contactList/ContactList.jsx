@@ -1,20 +1,23 @@
 import PropTypes from 'prop-types';
 import ContactListItem from '../contactListItem';
+import { List, ContactsWrapper } from './ContactList.styled';
 const ContactList = ({ contacts, onDeleteContact }) => {
   return (
-    <ul>
-      {contacts.map(contact => {
-        return (
-          <ContactListItem
-            key={contact.id}
-            name={contact.name}
-            number={contact.number}
-            id={contact.id}
-            onDeleteContact={onDeleteContact}
-          />
-        );
-      })}
-    </ul>
+    <ContactsWrapper>
+      <List>
+        {contacts.map(contact => {
+          return (
+            <ContactListItem
+              key={contact.id}
+              name={contact.name}
+              number={contact.number}
+              id={contact.id}
+              onDeleteContact={onDeleteContact}
+            />
+          );
+        })}
+      </List>
+    </ContactsWrapper>
   );
 };
 
