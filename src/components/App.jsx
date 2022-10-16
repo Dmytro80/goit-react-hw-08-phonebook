@@ -20,6 +20,16 @@ export class App extends Component {
   };
 
   formSubmitHandler = contact => {
+    const { contacts } = this.state;
+    const normalizedContactName = contact.name.toLocaleLowerCase();
+    const bookContainsName = contacts.filter(contact => {
+      return contact.name.toLocaleLowerCase() === normalizedContactName;
+    });
+
+    if (bookContainsName.length > 0) {
+      return alert(`${contact.name} is already in contacts.`);
+    }
+
     this.setState(prevState => ({
       contacts: [contact, ...prevState.contacts],
     }));
