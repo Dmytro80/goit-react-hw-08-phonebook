@@ -4,6 +4,8 @@ import ContactList from './contactList';
 import Filter from './filter';
 import { Wrapper, Title, SecondTitle } from './App.styled';
 
+const CONTACTS_STORAGE_KEY = 'contacts';
+
 export class App extends Component {
   state = {
     contacts: [
@@ -14,6 +16,25 @@ export class App extends Component {
     ],
     filter: '',
   };
+
+  componentDidMount() {
+    const contactsOfStorage = JSON.parse(
+      localStorage.getItem(CONTACTS_STORAGE_KEY)
+    );
+
+    if (contactsOfStorage) {
+      this.setState({ contacts: contactsOfStorage });
+    }
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem(
+        CONTACTS_STORAGE_KEY,
+        JSON.stringify(this.state.contacts)
+      );
+    }
+  }
 
   handleFilterInputChange = e => {
     const { value } = e.currentTarget;
