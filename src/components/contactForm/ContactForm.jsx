@@ -48,7 +48,7 @@ const ContactForm = ({ onSubmitContactForm }) => {
     };
 
     onSubmitContactForm(contact);
-    console.log(contact);
+
     resetForm();
   };
 
