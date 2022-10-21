@@ -1,16 +1,23 @@
 import styled from 'styled-components';
 
 export const ListItem = styled.li`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 450px;
-  font-size: 18px;
-  font-weight: 700;
+  width: 530px;
   :not(:last-child) {
     margin-bottom: 12px;
   }
 `;
+
+export const ItemWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const ItemText = styled.p`
+  font-size: 18px;
+  font-weight: 700;
+`;
+
 export const ListItemButton = styled.button`
   padding-top: 4px;
   padding-bottom: 4px;
