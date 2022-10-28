@@ -62,15 +62,16 @@ export const App = () => {
     });
   };
 
-  const visibleContacts = getVisibleContacts();
-
   return (
     <Wrapper>
       <Title>Phonebook</Title>
       <ContactForm onSubmitContactForm={formSubmitHandler} />
       <SecondTitle>Contacts</SecondTitle>
       <Filter filter={filterQuery} onInputChange={handleFilterInputChange} />
-      <ContactList contacts={visibleContacts} onDeleteContact={deleteContact} />
+      <ContactList
+        contacts={getVisibleContacts()}
+        onDeleteContact={deleteContact}
+      />
     </Wrapper>
   );
 };
