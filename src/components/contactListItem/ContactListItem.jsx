@@ -5,14 +5,22 @@ import {
   ItemWrapper,
   ItemText,
 } from './ContactListItem.styled';
-const ContactListItem = ({ id, name, number, onDeleteContact }) => {
+import { useDispatch } from 'react-redux';
+import { deleteContact } from 'redux/contactsSlice';
+
+const ContactListItem = ({ id, name, number }) => {
+  const dispatch = useDispatch();
+
   return (
     <ListItem>
       <ItemWrapper>
         <ItemText>
           {name}: {number}
         </ItemText>
-        <ListItemButton type="button" onClick={() => onDeleteContact(id)}>
+        <ListItemButton
+          type="button"
+          onClick={() => dispatch(deleteContact(id))}
+        >
           Delete
         </ListItemButton>
       </ItemWrapper>
@@ -25,5 +33,4 @@ ContactListItem.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   number: PropTypes.string.isRequired,
-  onDeleteContact: PropTypes.func.isRequired,
 };

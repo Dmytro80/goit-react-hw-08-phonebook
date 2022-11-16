@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -13,6 +12,9 @@ import {
   Error,
   IntupWrapper,
 } from './ContactForm.styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'redux/contactsSlice';
+import { getContacts } from 'redux/selectors';
 
 const initialValues = {
   name: '',
@@ -39,15 +41,28 @@ const schema = Yup.object().shape({
     .required('Number is required'),
 });
 
-const ContactForm = ({ onSubmitContactForm }) => {
+const ContactForm = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
+
   const handleSubmit = ({ name, number }, { resetForm }) => {
+    const normalizedName = name.toLocaleLowerCase();
+
+    const bookContainsName = contacts.filter(contact => {
+      return contact.name.toLocaleLowerCase() === normalizedName;
+    });
+
+    if (bookContainsName.length > 0) {
+      return alert(`${name} is already in contacts.`);
+    }
+
     const contact = {
       name: name.trim(),
       number: number.trim(),
       id: nanoid(),
     };
 
-    onSubmitContactForm(contact);
+    dispatch(addContact(contact));
 
     resetForm();
   };
@@ -79,7 +94,3 @@ const ContactForm = ({ onSubmitContactForm }) => {
   );
 };
 export default ContactForm;
-
-ContactForm.propTypes = {
-  onSubmitContactForm: PropTypes.func.isRequired,
-};
