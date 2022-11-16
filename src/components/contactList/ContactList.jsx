@@ -5,10 +5,10 @@ import { getContacts, getValueFilter } from 'redux/selectors';
 
 const ContactList = () => {
   const contacts = useSelector(getContacts);
-  const filter = useSelector(getValueFilter);
+  const { query } = useSelector(getValueFilter);
 
   const getVisibleContacts = () => {
-    const normalizedFilter = filter.toLocaleLowerCase();
+    const normalizedFilter = query.toLocaleLowerCase();
     return contacts.filter(contact => {
       return contact.name.toLocaleLowerCase().includes(normalizedFilter);
     });

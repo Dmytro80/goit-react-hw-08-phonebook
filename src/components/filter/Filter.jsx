@@ -1,14 +1,26 @@
-import PropTypes from 'prop-types';
 import { FindLabel, FindInput } from './Filter.styled';
+import { getValueFilter } from 'redux/selectors';
+import { useSelector, useDispatch } from 'react-redux';
+import { setValueFilter } from 'redux/filterSlice';
 
-const Filter = ({ filter, onInputChange }) => {
+const Filter = () => {
+  const { query } = useSelector(getValueFilter);
+
+  const dispatch = useDispatch();
+
+  const onInputChange = e => {
+    const { value } = e.currentTarget;
+
+    dispatch(setValueFilter(value));
+  };
+
   return (
     <FindLabel>
       Finde contacts by name:
       <FindInput
         type="text"
         name="filter"
-        value={filter}
+        value={query}
         pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
         title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
         required
@@ -18,8 +30,3 @@ const Filter = ({ filter, onInputChange }) => {
   );
 };
 export default Filter;
-
-Filter.propTypes = {
-  filter: PropTypes.string.isRequired,
-  onInputChange: PropTypes.func.isRequired,
-};
