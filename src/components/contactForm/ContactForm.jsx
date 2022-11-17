@@ -43,7 +43,7 @@ const schema = Yup.object().shape({
 
 const ContactForm = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
+  const { contacts } = useSelector(getContacts);
 
   const handleSubmit = ({ name, number }, { resetForm }) => {
     const normalizedName = name.toLocaleLowerCase();
