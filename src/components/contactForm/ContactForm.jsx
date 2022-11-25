@@ -72,21 +72,27 @@ const ContactForm = () => {
         onSubmit={handleSubmit}
         validationSchema={schema}
       >
-        <SubmitForm>
-          <IntupWrapper>
-            <FormLabel htmlFor="name">
-              Name:
-              <NameInput type="text" name="name" />
-              <Error name="name" component="p" />
-            </FormLabel>
-            <FormLabel htmlFor="phone">
-              Number:
-              <NumberInput type="tel" name="phone" />
-              <Error name="phone" component="p" />
-            </FormLabel>
-          </IntupWrapper>
-          <FormButton type="submit">Add contact</FormButton>
-        </SubmitForm>
+        {({ isSubmitting }) => {
+          return (
+            <SubmitForm>
+              <IntupWrapper>
+                <FormLabel htmlFor="name">
+                  Name:
+                  <NameInput type="text" name="name" />
+                  <Error name="name" component="p" />
+                </FormLabel>
+                <FormLabel htmlFor="phone">
+                  Number:
+                  <NumberInput type="tel" name="phone" />
+                  <Error name="phone" component="p" />
+                </FormLabel>
+              </IntupWrapper>
+              <FormButton type="submit" disabled={isSubmitting}>
+                Add contact
+              </FormButton>
+            </SubmitForm>
+          );
+        }}
       </Formik>
     </FormWrapper>
   );

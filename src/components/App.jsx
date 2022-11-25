@@ -7,6 +7,7 @@ import { selectError, selectIsLoading } from 'redux/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchContacts } from 'redux/operations';
+import Loader from './loader/Loader';
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -23,7 +24,7 @@ export const App = () => {
       <ContactForm />
       <SecondTitle>Contacts</SecondTitle>
       <Filter />
-      {isLoading && !error && <b>Request in progress...</b>}
+      {isLoading && !error && <Loader />}
       <ContactList />
     </Wrapper>
   );

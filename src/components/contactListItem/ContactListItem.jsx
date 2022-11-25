@@ -5,11 +5,14 @@ import {
   ItemWrapper,
   ItemText,
 } from './ContactListItem.styled';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteContact } from 'redux/operations';
+import { selectIsLoading } from 'redux/selectors';
 
 const ContactListItem = ({ id, name, phone }) => {
   const dispatch = useDispatch();
+
+  const isLoading = useSelector(selectIsLoading);
 
   return (
     <ListItem>
@@ -19,6 +22,7 @@ const ContactListItem = ({ id, name, phone }) => {
         </ItemText>
         <ListItemButton
           type="button"
+          disabled={isLoading}
           onClick={() => dispatch(deleteContact(id))}
         >
           Delete
