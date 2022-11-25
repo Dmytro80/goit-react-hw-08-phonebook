@@ -6,16 +6,16 @@ import {
   ItemText,
 } from './ContactListItem.styled';
 import { useDispatch } from 'react-redux';
-import { deleteContact } from 'redux/contactsSlice';
+import { deleteContact } from 'redux/operations';
 
-const ContactListItem = ({ id, name, number }) => {
+const ContactListItem = ({ id, name, phone }) => {
   const dispatch = useDispatch();
 
   return (
     <ListItem>
       <ItemWrapper>
         <ItemText>
-          {name}: {number}
+          {name}: {phone}
         </ItemText>
         <ListItemButton
           type="button"
@@ -32,5 +32,5 @@ export default ContactListItem;
 ContactListItem.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  number: PropTypes.string.isRequired,
+  phone: PropTypes.string.isRequired,
 };

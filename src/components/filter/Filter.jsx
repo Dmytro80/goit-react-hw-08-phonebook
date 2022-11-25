@@ -1,10 +1,10 @@
 import { FindLabel, FindInput } from './Filter.styled';
-import { getValueFilter } from 'redux/selectors';
 import { useSelector, useDispatch } from 'react-redux';
 import { setValueFilter } from 'redux/filterSlice';
+import { selectValueFilter } from 'redux/selectors';
 
 const Filter = () => {
-  const { query } = useSelector(getValueFilter);
+  const query = useSelector(selectValueFilter);
 
   const dispatch = useDispatch();
 

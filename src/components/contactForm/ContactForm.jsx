@@ -1,5 +1,4 @@
 import React from 'react';
-import { nanoid } from 'nanoid';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import {
@@ -12,13 +11,13 @@ import {
   Error,
   IntupWrapper,
 } from './ContactForm.styled';
-import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
-import { getContacts } from 'redux/selectors';
+import { useSelector, useDispatch } from 'react-redux';
+import { addContact } from 'redux/operations';
+import { selectContacts } from 'redux/selectors';
 
 const initialValues = {
   name: '',
-  number: '',
+  phone: '',
 };
 
 const schema = Yup.object().shape({
@@ -30,7 +29,7 @@ const schema = Yup.object().shape({
       "Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
     )
     .required('Name is required'),
-  number: Yup.string()
+  phone: Yup.string()
     .trim()
     .min(7, 'Too Short!')
     .max(15, 'Too Long!')
@@ -43,13 +42,13 @@ const schema = Yup.object().shape({
 
 const ContactForm = () => {
   const dispatch = useDispatch();
-  const { contacts } = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
 
-  const handleSubmit = ({ name, number }, { resetForm }) => {
-    const normalizedName = name.toLocaleLowerCase();
+  const handleSubmit = ({ name, phone }, { resetForm }) => {
+    const normalizedName = name.toLowerCase();
 
     const bookContainsName = contacts.filter(contact => {
-      return contact.name.toLocaleLowerCase() === normalizedName;
+      return contact.name.toLowerCase() === normalizedName;
     });
 
     if (bookContainsName.length > 0) {
@@ -58,8 +57,7 @@ const ContactForm = () => {
 
     const contact = {
       name: name.trim(),
-      number: number.trim(),
-      id: nanoid(),
+      phone: phone.trim(),
     };
 
     dispatch(addContact(contact));
@@ -81,10 +79,10 @@ const ContactForm = () => {
               <NameInput type="text" name="name" />
               <Error name="name" component="p" />
             </FormLabel>
-            <FormLabel htmlFor="number">
+            <FormLabel htmlFor="phone">
               Number:
-              <NumberInput type="tel" name="number" />
-              <Error name="number" component="p" />
+              <NumberInput type="tel" name="phone" />
+              <Error name="phone" component="p" />
             </FormLabel>
           </IntupWrapper>
           <FormButton type="submit">Add contact</FormButton>
