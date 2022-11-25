@@ -13,7 +13,7 @@ import {
 } from './ContactForm.styled';
 import { useSelector, useDispatch } from 'react-redux';
 import { addContact } from 'redux/operations';
-import { selectContacts } from 'redux/selectors';
+import { selectContacts, selectIsLoading } from 'redux/selectors';
 
 const initialValues = {
   name: '',
@@ -43,6 +43,7 @@ const schema = Yup.object().shape({
 const ContactForm = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
+  const isLoading = useSelector(selectIsLoading);
 
   const handleSubmit = ({ name, phone }, { resetForm }) => {
     const normalizedName = name.toLowerCase();
@@ -72,27 +73,23 @@ const ContactForm = () => {
         onSubmit={handleSubmit}
         validationSchema={schema}
       >
-        {({ isSubmitting }) => {
-          return (
-            <SubmitForm>
-              <IntupWrapper>
-                <FormLabel htmlFor="name">
-                  Name:
-                  <NameInput type="text" name="name" />
-                  <Error name="name" component="p" />
-                </FormLabel>
-                <FormLabel htmlFor="phone">
-                  Number:
-                  <NumberInput type="tel" name="phone" />
-                  <Error name="phone" component="p" />
-                </FormLabel>
-              </IntupWrapper>
-              <FormButton type="submit" disabled={isSubmitting}>
-                Add contact
-              </FormButton>
-            </SubmitForm>
-          );
-        }}
+        <SubmitForm>
+          <IntupWrapper>
+            <FormLabel htmlFor="name">
+              Name:
+              <NameInput type="text" name="name" />
+              <Error name="name" component="p" />
+            </FormLabel>
+            <FormLabel htmlFor="phone">
+              Number:
+              <NumberInput type="tel" name="phone" />
+              <Error name="phone" component="p" />
+            </FormLabel>
+          </IntupWrapper>
+          <FormButton type="submit" disabled={isLoading}>
+            Add contact
+          </FormButton>
+        </SubmitForm>
       </Formik>
     </FormWrapper>
   );

@@ -60,6 +60,9 @@ export const FormButton = styled.button`
   &:focus {
     background: #188ce8;
   }
+  &:disabled {
+    background: #bcdcf6;
+  }
 `;
 
 export const Error = styled(ErrorMessage)`

@@ -39,4 +39,7 @@ export const ListItemButton = styled.button`
   &:focus {
     background: #188ce8;
   }
+  &:disabled {
+    background: #bcdcf6;
+  }
 `;
