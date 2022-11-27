@@ -55,7 +55,6 @@ const ContactForm = () => {
       });
 
       if (bookContainsName.length > 0) {
-        toast.error('Error when adding material');
         return alert(`${name} is already in contacts.`);
       }
 
@@ -66,11 +65,13 @@ const ContactForm = () => {
 
       await addContact(contact);
 
-      alert('Сontact added');
+      toast.success('Contact added', {
+        position: 'top-center',
+      });
 
       resetForm();
     } catch (error) {
-      toast.error('Error when adding material');
+      toast.error('Error when adding contact');
       console.log(error);
     }
   };
