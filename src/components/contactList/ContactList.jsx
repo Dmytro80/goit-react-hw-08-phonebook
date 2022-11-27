@@ -1,10 +1,26 @@
 import ContactListItem from '../contactListItem';
 import { List } from './ContactList.styled';
 import { useSelector } from 'react-redux';
-import { selectVisibleContacts } from 'redux/selectors';
+import { selectValueFilter } from 'redux/selectors';
+import { useGetContactsQuery } from 'redux/contactsSlice';
 
 const ContactList = () => {
-  const visibleContacts = useSelector(selectVisibleContacts);
+  const query = useSelector(selectValueFilter);
+  const { data: contacts } = useGetContactsQuery();
+
+  const getVisibleContacts = () => {
+    const normalizedFilter = query.toLocaleLowerCase();
+
+    return contacts.filter(contact => {
+      return contact.name.toLocaleLowerCase().includes(normalizedFilter);
+    });
+  };
+
+  if (!contacts) {
+    return null;
+  }
+
+  const visibleContacts = getVisibleContacts();
 
   return (
     <List>

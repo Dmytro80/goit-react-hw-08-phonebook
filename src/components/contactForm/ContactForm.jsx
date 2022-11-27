@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -11,9 +12,10 @@ import {
   Error,
   IntupWrapper,
 } from './ContactForm.styled';
-import { useSelector, useDispatch } from 'react-redux';
-import { addContact } from 'redux/operations';
-import { selectContacts, selectIsLoading } from 'redux/selectors';
+import {
+  useGetContactsQuery,
+  useAddContactMutation,
+} from 'redux/contactsSlice';
 
 const initialValues = {
   name: '',
@@ -41,30 +43,41 @@ const schema = Yup.object().shape({
 });
 
 const ContactForm = () => {
-  const dispatch = useDispatch();
-  const contacts = useSelector(selectContacts);
-  const isLoading = useSelector(selectIsLoading);
+  const { data: contacts } = useGetContactsQuery();
+  const [addContact, { isLoading }] = useAddContactMutation();
 
-  const handleSubmit = ({ name, phone }, { resetForm }) => {
-    const normalizedName = name.toLowerCase();
+  const handleSubmit = async ({ name, phone }, { resetForm }) => {
+    try {
+      const normalizedName = name.toLowerCase();
 
-    const bookContainsName = contacts.filter(contact => {
-      return contact.name.toLowerCase() === normalizedName;
-    });
+      const bookContainsName = contacts.filter(contact => {
+        return contact.name.toLowerCase() === normalizedName;
+      });
 
-    if (bookContainsName.length > 0) {
-      return alert(`${name} is already in contacts.`);
+      if (bookContainsName.length > 0) {
+        toast.error('Error when adding material');
+        return alert(`${name} is already in contacts.`);
+      }
+
+      const contact = {
+        name: name.trim(),
+        phone: phone.trim(),
+      };
+
+      await addContact(contact);
+
+      alert('Сontact added');
+
+      resetForm();
+    } catch (error) {
+      toast.error('Error when adding material');
+      console.log(error);
     }
-
-    const contact = {
-      name: name.trim(),
-      phone: phone.trim(),
-    };
-
-    dispatch(addContact(contact));
-
-    resetForm();
   };
+
+  if (!contacts) {
+    return null;
+  }
 
   return (
     <FormWrapper>
@@ -86,8 +99,8 @@ const ContactForm = () => {
               <Error name="phone" component="p" />
             </FormLabel>
           </IntupWrapper>
-          <FormButton type="submit" disabled={isLoading}>
-            Add contact
+          <FormButton type="submit">
+            {isLoading ? 'Saving...' : 'Add contact'}
           </FormButton>
         </SubmitForm>
       </Formik>
