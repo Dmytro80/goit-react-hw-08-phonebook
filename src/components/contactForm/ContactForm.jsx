@@ -75,10 +75,6 @@ const ContactForm = () => {
     }
   };
 
-  if (!contacts) {
-    return null;
-  }
-
   return (
     <FormWrapper>
       <Formik

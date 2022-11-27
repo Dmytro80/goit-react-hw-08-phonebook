@@ -17,3 +17,11 @@ export const SecondTitle = styled.h2`
   font-size: 28px;
   margin-bottom: 28px;
 `;
+
+export const ErrorMessage = styled.p`
+  text-align: center;
+  padding-top: 32px;
+  padding-bottom: 32px;
+  font-size: 28px;
+  font-weight: 700;
+`;
