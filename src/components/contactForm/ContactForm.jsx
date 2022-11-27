@@ -55,7 +55,7 @@ const ContactForm = () => {
       });
 
       if (bookContainsName.length > 0) {
-        return alert(`${name} is already in contacts.`);
+        return toast.error(`${name} is already in contacts.`);
       }
 
       const contact = {
@@ -65,9 +65,7 @@ const ContactForm = () => {
 
       await addContact(contact);
 
-      toast.success('Contact added', {
-        position: 'top-center',
-      });
+      toast.success('Contact added');
 
       resetForm();
     } catch (error) {

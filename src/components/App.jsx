@@ -5,6 +5,7 @@ import Filter from './filter';
 import { Wrapper, Title, SecondTitle, ErrorMessage } from './App.styled';
 import { useGetContactsQuery } from 'redux/contactsSlice';
 import Loader from './loader/Loader';
+import { Toaster } from 'react-hot-toast';
 
 export const App = () => {
   const { error, isLoading } = useGetContactsQuery();
@@ -13,6 +14,7 @@ export const App = () => {
     <Wrapper>
       <Title>Phonebook</Title>
       <ContactForm />
+      <Toaster />
       <SecondTitle>Contacts</SecondTitle>
       <Filter />
 
