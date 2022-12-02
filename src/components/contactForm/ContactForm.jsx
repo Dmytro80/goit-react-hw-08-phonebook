@@ -1,4 +1,3 @@
-import toast from 'react-hot-toast';
 import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -12,10 +11,9 @@ import {
   Error,
   IntupWrapper,
 } from './ContactForm.styled';
-import {
-  useGetContactsQuery,
-  useAddContactMutation,
-} from 'redux/contactsSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { addContact } from 'redux/contacts/operations';
+import { selectContacts } from 'redux/contacts/selectors';
 
 const initialValues = {
   name: '',
@@ -43,35 +41,30 @@ const schema = Yup.object().shape({
 });
 
 const ContactForm = () => {
-  const { data: contacts } = useGetContactsQuery();
-  const [addContact, { isLoading }] = useAddContactMutation();
+  const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts);
 
-  const handleSubmit = async ({ name, phone }, { resetForm }) => {
-    try {
-      const normalizedName = name.toLowerCase();
+  const handleSubmit = ({ name, number }, { resetForm, setSubmitting }) => {
+    const normalizedName = name.toLowerCase();
 
-      const bookContainsName = contacts.filter(contact => {
-        return contact.name.toLowerCase() === normalizedName;
-      });
+    const bookContainsName = contacts.filter(contact => {
+      return contact.name.toLowerCase() === normalizedName;
+    });
 
-      if (bookContainsName.length > 0) {
-        return toast.error(`${name} is already in contacts.`);
-      }
-
-      const contact = {
-        name: name.trim(),
-        phone: phone.trim(),
-      };
-
-      await addContact(contact);
-
-      toast.success('Contact added');
-
-      resetForm();
-    } catch (error) {
-      toast.error('Error when adding contact');
-      console.log(error);
+    if (bookContainsName.length > 0) {
+      return alert(`${name} is already in contacts.`);
     }
+
+    const contact = {
+      name: name.trim(),
+      number: number.trim(),
+    };
+
+    dispatch(addContact(contact));
+
+    setSubmitting(false);
+
+    resetForm();
   };
 
   return (
@@ -81,23 +74,25 @@ const ContactForm = () => {
         onSubmit={handleSubmit}
         validationSchema={schema}
       >
-        <SubmitForm>
-          <IntupWrapper>
-            <FormLabel htmlFor="name">
-              Name:
-              <NameInput type="text" name="name" />
-              <Error name="name" component="p" />
-            </FormLabel>
-            <FormLabel htmlFor="phone">
-              Number:
-              <NumberInput type="tel" name="phone" />
-              <Error name="phone" component="p" />
-            </FormLabel>
-          </IntupWrapper>
-          <FormButton type="submit">
-            {isLoading ? 'Saving...' : 'Add contact'}
-          </FormButton>
-        </SubmitForm>
+        {({ isSubmitting }) => (
+          <SubmitForm>
+            <IntupWrapper>
+              <FormLabel htmlFor="name">
+                Name:
+                <NameInput type="text" name="name" />
+                <Error name="name" component="p" />
+              </FormLabel>
+              <FormLabel htmlFor="phone">
+                Number:
+                <NumberInput type="tel" name="number" />
+                <Error name="phone" component="p" />
+              </FormLabel>
+            </IntupWrapper>
+            <FormButton type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Saving...' : 'Add contact'}
+            </FormButton>
+          </SubmitForm>
+        )}
       </Formik>
     </FormWrapper>
   );
