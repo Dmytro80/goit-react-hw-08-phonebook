@@ -8,8 +8,10 @@ import { Helmet } from 'react-helmet';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { fetchContacts } from 'redux/contacts/operations';
+import MainTitle from 'components/mainTitle/MainTitle';
+import SecondaryTitle from 'components/secondaryTitle/SecondaryTitle';
 
-export const Contacts = () => {
+const Contacts = () => {
   const isLoading = useSelector(selectLoading);
 
   const error = useSelector(selectError);
@@ -21,27 +23,21 @@ export const Contacts = () => {
   }, [dispatch]);
 
   return (
-    <div>
+    <>
       <Helmet>
         <title>Your contacts</title>
       </Helmet>
-      <h1
-        style={{ textAlign: 'center', fontSize: '36px', marginBottom: '28px' }}
-      >
-        Phonebook
-      </h1>
+      <MainTitle style={{ marginBottom: '28px' }}>Phonebook</MainTitle>
       <ContactForm />
-      <h2
-        style={{ textAlign: 'center', fontSize: '28px', marginBottom: '28px' }}
-      >
-        Contacts
-      </h2>
+      <SecondaryTitle style={{ marginBottom: '28px' }}>Contacts</SecondaryTitle>
       <Filter />
       {isLoading && !error && <Loader />}
       {!isLoading && error && (
         <b>Something went wrong, try reloading the page</b>
       )}
-      {!isLoading && !error && <ContactList />}
-    </div>
+      {!error && <ContactList />}
+    </>
   );
 };
+
+export default Contacts;

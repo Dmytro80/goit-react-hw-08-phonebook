@@ -17,7 +17,7 @@ import { selectContacts } from 'redux/contacts/selectors';
 
 const initialValues = {
   name: '',
-  phone: '',
+  number: '',
 };
 
 const schema = Yup.object().shape({
@@ -29,7 +29,7 @@ const schema = Yup.object().shape({
       "Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
     )
     .required('Name is required'),
-  phone: Yup.string()
+  number: Yup.string()
     .trim()
     .min(7, 'Too Short!')
     .max(15, 'Too Long!')
@@ -82,10 +82,10 @@ const ContactForm = () => {
                 <NameInput type="text" name="name" />
                 <Error name="name" component="p" />
               </FormLabel>
-              <FormLabel htmlFor="phone">
+              <FormLabel htmlFor="number">
                 Number:
                 <NumberInput type="tel" name="number" />
-                <Error name="phone" component="p" />
+                <Error name="number" component="p" />
               </FormLabel>
             </IntupWrapper>
             <FormButton type="submit" disabled={isSubmitting}>

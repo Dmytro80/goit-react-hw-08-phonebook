@@ -1,13 +1,16 @@
 import { Helmet } from 'react-helmet';
 import RegisterForm from 'components/registerForm/RegisterForm';
+import PageWrapper from '../components/pageWrapper';
 
-export const Register = () => {
+const Register = () => {
   return (
-    <div>
+    <PageWrapper>
       <Helmet>
         <title>Registration</title>
       </Helmet>
       <RegisterForm />
-    </div>
+    </PageWrapper>
   );
 };
+
+export default Register;

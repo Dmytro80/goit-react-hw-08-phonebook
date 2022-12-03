@@ -1,13 +1,16 @@
 import { Helmet } from 'react-helmet';
 import LoginForm from 'components/loginForm/LoginForm';
+import PageWrapper from '../components/pageWrapper';
 
-export const Login = () => {
+const Login = () => {
   return (
-    <div>
+    <PageWrapper>
       <Helmet>
         <title>Login</title>
       </Helmet>
       <LoginForm />
-    </div>
+    </PageWrapper>
   );
 };
+
+export default Login;
