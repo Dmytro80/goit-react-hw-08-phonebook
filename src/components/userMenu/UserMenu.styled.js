@@ -8,4 +8,5 @@ export const UserMenuWrapper = styled.div`
 
 export const UserMenuText = styled.p`
   font-weight: 700;
+  color: #757575;
 `;

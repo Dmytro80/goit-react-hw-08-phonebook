@@ -1,51 +1,58 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { addContact, deleteContact, fetchContacts } from './operations';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import axios from 'axios';
 
-const contactsInitialState = {
-  items: [],
-  isLoading: false,
-  error: null,
-};
+const axiosBaseQuery =
+  ({ baseUrl } = { baseUrl: '' }) =>
+  async ({ url, method, data, params }) => {
+    try {
+      const result = await axios({ url: baseUrl + url, method, data, params });
+      return { data: result.data };
+    } catch (axiosError) {
+      let err = axiosError;
+      return {
+        error: {
+          status: err.response?.status,
+          data: err.response?.data || err.message,
+        },
+      };
+    }
+  };
 
-const handlePending = state => {
-  state.isLoading = true;
-};
+export const contactsApi = createApi({
+  reducerPath: 'contactsApi',
+  baseQuery: axiosBaseQuery(),
 
-const handleRejected = (state, action) => {
-  state.isLoading = false;
-  state.error = action.payload;
-};
-
-const contactsSlice = createSlice({
-  name: 'contacts',
-  initialState: contactsInitialState,
-  extraReducers: {
-    [fetchContacts.pending]: handlePending,
-    [fetchContacts.fulfilled](state, action) {
-      state.isLoading = false;
-      state.error = null;
-      state.items = action.payload;
-    },
-    [fetchContacts.rejected]: handleRejected,
-    [addContact.pending]: handlePending,
-    [addContact.fulfilled](state, action) {
-      state.isLoading = false;
-      state.error = null;
-      state.items.unshift(action.payload);
-    },
-    [addContact.rejected]: handleRejected,
-    [deleteContact.pending]: handlePending,
-    [deleteContact.fulfilled](state, action) {
-      state.isLoading = false;
-      state.error = null;
-
-      const index = state.items.findIndex(
-        item => item.id === action.payload.id
-      );
-      state.items.splice(index, 1);
-    },
-    [deleteContact.rejected]: handleRejected,
+  tagTypes: ['Contacts'],
+  endpoints(build) {
+    return {
+      getContacts: build.query({
+        query: () => ({ url: '/contacts', method: 'get' }),
+        providesTags: ['Contacts'],
+      }),
+      mutation: build.mutation({
+        query: () => ({ url: '/mutation', method: 'post' }),
+      }),
+      addContact: build.mutation({
+        query: contact => ({
+          url: '/contacts',
+          method: 'POST',
+          data: contact,
+        }),
+        invalidatesTags: ['Contacts'],
+      }),
+      deleteContact: build.mutation({
+        query: contactId => ({
+          url: `/contacts/${contactId}`,
+          method: 'DELETE',
+        }),
+        invalidatesTags: ['Contacts'],
+      }),
+    };
   },
 });
 
-export const contactsReducer = contactsSlice.reducer;
+export const {
+  useGetContactsQuery,
+  useAddContactMutation,
+  useDeleteContactMutation,
+} = contactsApi;

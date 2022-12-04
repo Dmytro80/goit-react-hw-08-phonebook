@@ -6,10 +6,10 @@ export const AuthNavLink = styled(NavLink)`
   text-decoration: none;
   padding: 12px;
   font-weight: 700;
-  color: #2a363b;
+  color: #757575;
 
   &.active {
-    color: orangered;
+    color: #2196f3;
   }
   :hover,
   :focus {

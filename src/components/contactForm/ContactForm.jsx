@@ -11,9 +11,12 @@ import {
   Error,
   IntupWrapper,
 } from './ContactForm.styled';
-import { useSelector, useDispatch } from 'react-redux';
-import { addContact } from 'redux/contacts/operations';
-import { selectContacts } from 'redux/contacts/selectors';
+
+import toast from 'react-hot-toast';
+import {
+  useGetContactsQuery,
+  useAddContactMutation,
+} from 'redux/contacts/contactsSlice';
 
 const initialValues = {
   name: '',
@@ -41,30 +44,35 @@ const schema = Yup.object().shape({
 });
 
 const ContactForm = () => {
-  const dispatch = useDispatch();
-  const contacts = useSelector(selectContacts);
+  const { data: contacts } = useGetContactsQuery();
+  const [addContact, { isLoading }] = useAddContactMutation();
 
-  const handleSubmit = ({ name, number }, { resetForm, setSubmitting }) => {
-    const normalizedName = name.toLowerCase();
+  const handleSubmit = async ({ name, number }, { resetForm }) => {
+    try {
+      const normalizedName = name.toLowerCase();
 
-    const bookContainsName = contacts.filter(contact => {
-      return contact.name.toLowerCase() === normalizedName;
-    });
+      const bookContainsName = contacts.filter(contact => {
+        return contact.name.toLowerCase() === normalizedName;
+      });
 
-    if (bookContainsName.length > 0) {
-      return alert(`${name} is already in contacts.`);
+      if (bookContainsName.length > 0) {
+        return toast.error(`${name} is already in contacts.`);
+      }
+
+      const contact = {
+        name: name.trim(),
+        number: number.trim(),
+      };
+
+      await addContact(contact);
+
+      toast.success('Contact added');
+
+      resetForm();
+    } catch (error) {
+      toast.error('Error when adding contact');
+      console.log(error);
     }
-
-    const contact = {
-      name: name.trim(),
-      number: number.trim(),
-    };
-
-    dispatch(addContact(contact));
-
-    setSubmitting(false);
-
-    resetForm();
   };
 
   return (
@@ -74,25 +82,23 @@ const ContactForm = () => {
         onSubmit={handleSubmit}
         validationSchema={schema}
       >
-        {({ isSubmitting }) => (
-          <SubmitForm>
-            <IntupWrapper>
-              <FormLabel htmlFor="name">
-                Name:
-                <NameInput type="text" name="name" />
-                <Error name="name" component="p" />
-              </FormLabel>
-              <FormLabel htmlFor="number">
-                Number:
-                <NumberInput type="tel" name="number" />
-                <Error name="number" component="p" />
-              </FormLabel>
-            </IntupWrapper>
-            <FormButton type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Saving...' : 'Add contact'}
-            </FormButton>
-          </SubmitForm>
-        )}
+        <SubmitForm>
+          <IntupWrapper>
+            <FormLabel htmlFor="name">
+              Name:
+              <NameInput type="text" name="name" />
+              <Error name="name" component="p" />
+            </FormLabel>
+            <FormLabel htmlFor="number">
+              Number:
+              <NumberInput type="tel" name="number" />
+              <Error name="number" component="p" />
+            </FormLabel>
+          </IntupWrapper>
+          <FormButton type="submit" disabled={isLoading}>
+            {isLoading ? 'Saving...' : 'Add contact'}
+          </FormButton>
+        </SubmitForm>
       </Formik>
     </FormWrapper>
   );

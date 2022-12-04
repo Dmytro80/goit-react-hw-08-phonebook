@@ -5,11 +5,11 @@ import {
   ItemWrapper,
   ItemText,
 } from './ContactListItem.styled';
-import { useDispatch } from 'react-redux';
-import { deleteContact } from 'redux/contacts/operations';
+import { useDeleteContactMutation } from 'redux/contacts/contactsSlice';
 
 const ContactListItem = ({ id, name, number }) => {
-  const dispatch = useDispatch();
+  const [deleteContact, { isLoading }] = useDeleteContactMutation();
+
   return (
     <ListItem>
       <ItemWrapper>
@@ -18,7 +18,8 @@ const ContactListItem = ({ id, name, number }) => {
         </ItemText>
         <ListItemButton
           type="button"
-          onClick={() => dispatch(deleteContact(id))}
+          disabled={isLoading}
+          onClick={() => deleteContact(id)}
         >
           Delete
         </ListItemButton>
