@@ -1,22 +1,16 @@
 import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import {
-  FormWrapper,
-  SubmitForm,
-  NameInput,
-  NumberInput,
-  FormLabel,
-  FormButton,
-  Error,
-  IntupWrapper,
-} from './ContactForm.styled';
-
+import { FormWrapper } from './ContactForm.styled';
+import FormField from 'components/formField/FormField';
 import toast from 'react-hot-toast';
 import {
   useGetContactsQuery,
   useAddContactMutation,
 } from 'redux/contacts/contactsSlice';
+import FormFieldWrapper from '../formFieldWrapper';
+import FormikForm from '../formikForm';
+import FormButton from '../formButton';
 
 const initialValues = {
   name: '',
@@ -82,23 +76,15 @@ const ContactForm = () => {
         onSubmit={handleSubmit}
         validationSchema={schema}
       >
-        <SubmitForm>
-          <IntupWrapper>
-            <FormLabel htmlFor="name">
-              Name:
-              <NameInput type="text" name="name" />
-              <Error name="name" component="p" />
-            </FormLabel>
-            <FormLabel htmlFor="number">
-              Number:
-              <NumberInput type="tel" name="number" />
-              <Error name="number" component="p" />
-            </FormLabel>
-          </IntupWrapper>
-          <FormButton type="submit" disabled={isLoading}>
-            {isLoading ? 'Saving...' : 'Add contact'}
+        <FormikForm>
+          <FormFieldWrapper>
+            <FormField name="name" type="text" title="Name" />
+            <FormField name="number" type="tel" title="Number" />
+          </FormFieldWrapper>
+          <FormButton isLoading={isLoading}>
+            {isLoading ? 'in progress...' : 'Add contact'}
           </FormButton>
-        </SubmitForm>
+        </FormikForm>
       </Formik>
     </FormWrapper>
   );
