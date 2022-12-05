@@ -5,5 +5,5 @@ export const HeaderStyled = styled.header`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
-  border-bottom: 2px solid rgb(96, 128, 209);
+  border-bottom: 2px solid #2196f3;
 `;

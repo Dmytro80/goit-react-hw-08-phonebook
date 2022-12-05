@@ -20,5 +20,5 @@ export const FormError = styled(ErrorMessage)`
   padding-bottom: 8px;
   font-size: 14px;
   font-weight: 500;
-  color: red;
+  color: #d8000c;
 `;

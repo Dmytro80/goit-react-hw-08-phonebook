@@ -6,6 +6,9 @@ import FormField from 'components/formField/FormField';
 import FormFieldWrapper from '../formFieldWrapper';
 import FormikForm from '../formikForm';
 import FormButton from '../formButton';
+import { useSelector } from 'react-redux';
+import { selectError, selectIsLoading } from 'redux/auth/selectors';
+import ErrorMessage from 'components/errorMessage/ErrorMessage';
 
 const initialValues = {
   email: '',
@@ -19,6 +22,9 @@ const schema = Yup.object().shape({
 
 const LoginForm = () => {
   const dispatch = useDispatch();
+
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
 
   const handleSubmit = ({ email, password }, { resetForm }) => {
     const contact = {
@@ -42,7 +48,12 @@ const LoginForm = () => {
           <FormField name="email" type="email" title="Email" />
           <FormField name="password" type="password" title="Password" />
         </FormFieldWrapper>
-        <FormButton>Log In</FormButton>
+        <FormButton isLoading={isLoading}>
+          {isLoading ? 'In progress...' : 'Log In'}
+        </FormButton>
+        {error && !isLoading && (
+          <ErrorMessage>Incorrect entry! Try again...</ErrorMessage>
+        )}
       </FormikForm>
     </Formik>
   );
