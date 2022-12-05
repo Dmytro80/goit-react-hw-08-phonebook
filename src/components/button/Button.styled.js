@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-export const SubmitButton = styled.button`
+export const ButtonStyled = styled.button`
   padding-top: 8px;
   padding-bottom: 8px;
-  min-width: 90px;
+  min-width: 70px;
   font-family: inherit;
   font-weight: 500;
   font-size: 12px;

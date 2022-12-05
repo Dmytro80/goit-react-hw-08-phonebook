@@ -10,7 +10,7 @@ import {
 } from 'redux/contacts/contactsSlice';
 import FormFieldWrapper from '../formFieldWrapper';
 import FormikForm from '../formikForm';
-import FormButton from '../formButton';
+import Button from 'components/button/Button';
 
 const initialValues = {
   name: '',
@@ -81,9 +81,10 @@ const ContactForm = () => {
             <FormField name="name" type="text" title="Name" />
             <FormField name="number" type="tel" title="Number" />
           </FormFieldWrapper>
-          <FormButton isLoading={isLoading}>
+          <Button disabled={isLoading} type="submit">
+            {' '}
             {isLoading ? 'in progress...' : 'Add contact'}
-          </FormButton>
+          </Button>
         </FormikForm>
       </Formik>
     </FormWrapper>

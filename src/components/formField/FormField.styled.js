@@ -2,9 +2,8 @@ import styled from 'styled-components';
 import { Field, ErrorMessage } from 'formik';
 
 export const FormLabel = styled.label`
-  font-size: 18px;
   font-weight: 700;
-  color: black;
+  color: #757575;
 `;
 
 export const FormInput = styled(Field)`

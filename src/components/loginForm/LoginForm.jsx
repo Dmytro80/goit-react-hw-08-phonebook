@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import FormField from 'components/formField/FormField';
 import FormFieldWrapper from '../formFieldWrapper';
 import FormikForm from '../formikForm';
-import FormButton from '../formButton';
+import Button from 'components/button/Button';
 import { useSelector } from 'react-redux';
 import { selectError, selectIsLoading } from 'redux/auth/selectors';
 import ErrorMessage from 'components/errorMessage/ErrorMessage';
@@ -27,12 +27,12 @@ const LoginForm = () => {
   const error = useSelector(selectError);
 
   const handleSubmit = ({ email, password }, { resetForm }) => {
-    const contact = {
-      email: email.trim(),
-      password: password.trim(),
-    };
-
-    dispatch(logIn(contact));
+    dispatch(
+      logIn({
+        email: email.trim(),
+        password: password.trim(),
+      })
+    );
 
     resetForm();
   };
@@ -48,9 +48,11 @@ const LoginForm = () => {
           <FormField name="email" type="email" title="Email" />
           <FormField name="password" type="password" title="Password" />
         </FormFieldWrapper>
-        <FormButton isLoading={isLoading}>
+        <Button disabled={isLoading} type="submit">
+          {' '}
           {isLoading ? 'In progress...' : 'Log In'}
-        </FormButton>
+        </Button>
+
         {error && !isLoading && (
           <ErrorMessage>Incorrect entry! Try again...</ErrorMessage>
         )}

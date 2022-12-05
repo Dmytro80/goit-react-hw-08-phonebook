@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet';
 import MainTitle from 'components/mainTitle/MainTitle';
 import SecondaryTitle from 'components/secondaryTitle/SecondaryTitle';
 import { useGetContactsQuery } from 'redux/contacts/contactsSlice';
+import ErrorMessage from 'components/errorMessage/ErrorMessage';
 
 const Contacts = () => {
   const { error, isLoading } = useGetContactsQuery();
@@ -21,7 +22,9 @@ const Contacts = () => {
       <Filter />
       {isLoading && !error && <Loader />}
       {!isLoading && error && (
-        <b>Something went wrong, try reloading the page</b>
+        <ErrorMessage>
+          Something went wrong, try reloading the page
+        </ErrorMessage>
       )}
       {!error && <ContactList />}
     </>

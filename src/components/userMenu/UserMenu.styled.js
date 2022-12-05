@@ -4,6 +4,7 @@ export const UserMenuWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
+  padding: 12px;
 `;
 
 export const UserMenuText = styled.p`
