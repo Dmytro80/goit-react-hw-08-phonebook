@@ -13,6 +13,7 @@ const HomePage = lazy(() => import('../pages/Home'));
 const RegisterPage = lazy(() => import('../pages/Register'));
 const ContactsPage = lazy(() => import('../pages/Contacts'));
 const LoginPage = lazy(() => import('../pages/Login'));
+const EditContactModal = lazy(() => import('./editContactModal'));
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -47,11 +48,21 @@ export const App = () => {
         />
 
         <Route
-          path="/contacts"
+          path="/contacts/*"
           element={
             <PrivateRoute redirectTo="/login" component={<ContactsPage />} />
           }
-        />
+        >
+          <Route
+            path="edit/:contactId"
+            element={
+              <PrivateRoute
+                redirectTo="/login"
+                component={<EditContactModal />}
+              />
+            }
+          />
+        </Route>
       </Route>
     </Routes>
   );

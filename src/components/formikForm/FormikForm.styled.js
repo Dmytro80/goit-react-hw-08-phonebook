@@ -9,4 +9,5 @@ export const SubmitForm = styled(Form)`
   border: 2px solid #2196f3;
   border-radius: 4px;
   padding: 50px;
+  background-color: #fff;
 `;

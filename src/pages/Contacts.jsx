@@ -7,6 +7,7 @@ import MainTitle from 'components/mainTitle/MainTitle';
 import SecondaryTitle from 'components/secondaryTitle/SecondaryTitle';
 import { useGetContactsQuery } from 'redux/contacts/contactsSlice';
 import ErrorMessage from 'components/errorMessage/ErrorMessage';
+import { Outlet } from 'react-router-dom';
 
 const Contacts = () => {
   const { error, isLoading } = useGetContactsQuery();
@@ -27,6 +28,7 @@ const Contacts = () => {
         </ErrorMessage>
       )}
       {!error && <ContactList />}
+      <Outlet />
     </>
   );
 };

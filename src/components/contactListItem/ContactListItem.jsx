@@ -1,26 +1,39 @@
 import PropTypes from 'prop-types';
-import { ListItem, ItemWrapper, ItemText } from './ContactListItem.styled';
+import { ListItem, Wrapper, ItemText } from './ContactListItem.styled';
 import { useDeleteContactMutation } from 'redux/contacts/contactsSlice';
 import Button from 'components/button/Button';
+import { useNavigate } from 'react-router-dom';
 
-const ContactListItem = ({ id, name, number }) => {
+const ContactListItem = ({ id: contactId, name, number }) => {
   const [deleteContact, { isLoading }] = useDeleteContactMutation();
+
+  const navigate = useNavigate();
 
   return (
     <ListItem>
-      <ItemWrapper>
+      <Wrapper>
         <ItemText>
           {name}: {number}
         </ItemText>
-        <Button
-          type="button"
-          style={{ paddingTop: '4px', paddingBottom: '4px' }}
-          disabled={isLoading}
-          onClick={() => deleteContact(id)}
-        >
-          Delete
-        </Button>
-      </ItemWrapper>
+        <Wrapper style={{ gap: '6px' }}>
+          <Button
+            type="button"
+            style={{ paddingTop: '4px', paddingBottom: '4px' }}
+            disabled={isLoading}
+            onClick={() => deleteContact(contactId)}
+          >
+            Delete
+          </Button>
+          <Button
+            type="button"
+            style={{ paddingTop: '4px', paddingBottom: '4px' }}
+            disabled={isLoading}
+            onClick={() => navigate(`/contacts/edit/${contactId}`)}
+          >
+            Edit
+          </Button>
+        </Wrapper>
+      </Wrapper>
     </ListItem>
   );
 };

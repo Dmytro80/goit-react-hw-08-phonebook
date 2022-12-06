@@ -21,6 +21,7 @@ const schema = Yup.object().shape({
   name: Yup.string()
     .trim()
     .min(3, 'Too Short!')
+    .max(25, 'Too Long!')
     .matches(
       /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/,
       "Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
