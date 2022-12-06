@@ -10,6 +10,9 @@ export const FindLabel = styled.label`
 `;
 export const FindInput = styled.input`
   width: 250px;
-  padding: 3px;
+  padding: 6px;
   margin-left: 23px;
+  ::placeholder {
+  font: inherit;
+  font-size: 14px;
 `;
